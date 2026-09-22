@@ -1,4 +1,3 @@
-// src/components/AlarmPanel.tsx
 'use client';
 
 import { AlarmIcon } from './icons/ScadaIcons';
