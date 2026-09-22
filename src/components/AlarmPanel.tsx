@@ -53,7 +53,10 @@ export default function AlarmPanel({ alarms }: { alarms: AlarmEventRow[] }) {
                 </div>
                 <p className="text-[11px] text-text-dim truncate mt-0.5">{a.areaName} · {a.tagName}</p>
               </div>
-              <span className="readout text-[11px] text-text-dim shrink-0">{formatTime(a.eventTime)}</span>
+              {/* FIX: suppressHydrationWarning added here */}
+              <span suppressHydrationWarning className="readout text-[11px] text-text-dim shrink-0">
+                {formatTime(a.eventTime)}
+              </span>
             </div>
           );
         })}
