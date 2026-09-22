@@ -1,41 +1,35 @@
-// src/components/NavRail.tsx
 'use client';
 
-import { useState } from 'react';
-import { TelemetryIcon, AlarmIcon, DatabaseIcon, SettingsIcon } from './icons/ScadaIcons';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { TelemetryIcon, AlarmIcon, HistorianIcon, SettingsIcon } from './icons/ScadaIcons';
 
 const NAV_ITEMS = [
-  { id: 'telemetry', label: 'Telemetry', Icon: TelemetryIcon },
-  { id: 'alarms', label: 'Alarms', Icon: AlarmIcon },
-  { id: 'historian', label: 'Historian', Icon: DatabaseIcon },
-  { id: 'settings', label: 'Settings', Icon: SettingsIcon },
-] as const;
+  { name: 'Telemetry', href: '/', icon: TelemetryIcon },
+  { name: 'Alarms', href: '/alarms', icon: AlarmIcon },
+  { name: 'Historian', href: '/historian', icon: HistorianIcon },
+  { name: 'Settings', href: '/settings', icon: SettingsIcon },
+];
 
-export default function NavRail({
-  active,
-  onChange,
-}: {
-  active: string;
-  onChange: (id: string) => void;
-}) {
+export default function NavRail() {
+  const pathname = usePathname();
+
   return (
-    <nav className="hidden md:flex w-16 shrink-0 flex-col items-center gap-1 border-r border-steelline bg-graphite/60 py-4">
-      {NAV_ITEMS.map(({ id, label, Icon }) => {
-        const isActive = active === id;
+    <nav className="flex flex-col gap-2 p-3 border-r border-white/10 bg-black/40 backdrop-blur-md w-20 shrink-0 select-none">
+      {NAV_ITEMS.map((item) => {
+        const Icon = item.icon;
+        const isActive = pathname === item.href;
         return (
-          <button
-            key={id}
-            onClick={() => onChange(id)}
-            aria-label={label}
-            aria-current={isActive}
-            className={`group relative flex h-12 w-12 flex-col items-center justify-center rounded-md transition-colors ${
-              isActive ? 'bg-cyan/10 text-cyan' : 'text-text-dim hover:text-offwhite hover:bg-white/5'
+          <Link
+            key={item.name}
+            href={item.href}
+            className={`flex flex-col items-center justify-center gap-1 py-3 px-1 rounded-lg transition-colors ${
+              isActive ? 'bg-white/10 text-cyan' : 'text-text-dim hover:text-white hover:bg-white/5'
             }`}
           >
-            {isActive && <span className="absolute left-0 h-6 w-0.5 rounded-r bg-cyan" />}
-            <Icon className="h-5 w-5" />
-            <span className="mt-1 text-[9px] leading-none">{label}</span>
-          </button>
+            <Icon className="w-5 h-5" />
+            <span className="text-[10px] font-medium tracking-tight">{item.name}</span>
+          </Link>
         );
       })}
     </nav>
